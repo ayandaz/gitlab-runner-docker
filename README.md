@@ -48,7 +48,7 @@ Follow the prompts:
 - Description: My very own docker container
 - Tags: docker-unix-runner
 - Executor: Choose docker.
-- Default Docker image: Specify an image to use for jobs (e.g., docker:latest).
+- Default Docker image: maven:3.9.2-eclipse-temurin-17
 
 After registration, your runner will appear in the GitLab project and be ready to run jobs.
 
