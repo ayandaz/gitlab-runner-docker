@@ -24,12 +24,18 @@ This repository provides a Docker Compose setup to run a GitLab Runner in a cont
 git clone https://github.com/ayandaz/gitlab-runner-docker.git
 cd gitlab-runner-docker
 ```
+### test these 
 
 2. Create a configuration directory for the runner:
 
 ```bash
 mkdir config
 ```
+## Start the Runner
+```bash
+docker-compose up -d
+```
+This will start the GitLab Runner container in detached mode.
 
 ## Registering the Runner
 Enter the running container:
@@ -39,31 +45,20 @@ docker exec -it gitlab-runner gitlab-runner register
 Follow the prompts:
 
 GitLab instance URL: Enter your GitLab URL (e.g., https://gitlab.com/ or your self-hosted instance).
-
 Registration token: Get this from your GitLab project under Settings > CI/CD > Runners > Set up a specific runner.
-
 Description: My very own docker container
-
 Tags: docker-unix-runner
-
 Executor: Choose docker.
-
 Default Docker image: Specify an image to use for jobs (e.g., docker:latest).
 
 After registration, your runner will appear in the GitLab project and be ready to run jobs.
 
-3. Start the Runner
-```bash
-docker-compose up -d
-```
-This will start the GitLab Runner container in detached mode.
-
-4. Stop the Runner
+## Stop the Runner
 ```bash
 docker-compose down
 ```
 This stops and removes the container but keeps the configuration in ./config.
-
+---
 Notes
 The Docker socket is mounted to allow the runner to use Docker commands inside jobs.
 Runner configuration is persisted in the ./config directory.
