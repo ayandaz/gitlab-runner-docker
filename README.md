@@ -31,19 +31,7 @@ cd gitlab-runner-docker
 mkdir config
 ```
 
-3. Start the Runner
-```bash
-docker-compose up -d
-```
-This will start the GitLab Runner container in detached mode.
-
-4. Stop the Runner
-```bash
-docker-compose down
-```
-This stops and removes the container but keeps the configuration in ./config.
-
-Registering the Runner
+## Registering the Runner
 Enter the running container:
 ```bash
 docker exec -it gitlab-runner gitlab-runner register
@@ -64,9 +52,19 @@ Default Docker image: Specify an image to use for jobs (e.g., docker:latest).
 
 After registration, your runner will appear in the GitLab project and be ready to run jobs.
 
+3. Start the Runner
+```bash
+docker-compose up -d
+```
+This will start the GitLab Runner container in detached mode.
+
+4. Stop the Runner
+```bash
+docker-compose down
+```
+This stops and removes the container but keeps the configuration in ./config.
+
 Notes
 The Docker socket is mounted to allow the runner to use Docker commands inside jobs.
-
 Runner configuration is persisted in the ./config directory.
-
 You can restart the container anytime with docker-compose restart.
