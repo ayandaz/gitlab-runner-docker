@@ -57,6 +57,11 @@ After registration, your runner will appear in the GitLab project and be ready t
 docker-compose down
 ```
 This stops and removes the container but keeps the configuration in ./config.
+
+### Example command to make sure that the runner can actually talk to the host Docker daemon through the mapped socket
+```
+docker exec -it gitlab-runner docker info
+```
 ---
 Notes
 The Docker socket is mounted to allow the runner to use Docker commands inside jobs.
