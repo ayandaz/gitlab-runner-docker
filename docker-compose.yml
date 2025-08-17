@@ -2,6 +2,7 @@ services:
   gitlab-runner:
     build: .
     container_name: gitlab-runner
+    privileged: true
     restart: always
     volumes:
       - ./config:/etc/gitlab-runner
