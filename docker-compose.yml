@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   gitlab-runner:
-    image: gitlab/gitlab-runner:latest
+    build: .
     container_name: gitlab-runner
     restart: always
     volumes:
