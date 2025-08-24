@@ -74,7 +74,7 @@ Generate SSH Key on the Host
 
 Run this on your host machine (not inside the container):
 
- ssh-keygen -t ed25519 -C "ci-runner@example.com" -f ./gitlab_ci_id_ed25519 -N "passphrase"
+ssh-keygen -t ed25519 -C "ci-runner@example.com" -f ./.ssh/id_ed25519
 
 
 This will create two files in your current directory:
@@ -90,5 +90,11 @@ GitLab → Settings → SSH Keys → Paste the .pub key
 2️⃣ Prepare Known Hosts
 
 Fetch GitLab’s SSH fingerprint to avoid prompts:
+try to log in once,
+ssh -T git@gitlab.com
+added gitlab.com to known_hosts
+or, ssh-keyscan -t ed25519 gitlab.com >> known_hosts
 
-ssh-keyscan gitlab.com >> ./known_hosts
+chmod 600 root/.ssh/id_ed25519
+chmod 644 root/.ssh/id_ed25519.pub
+chmos 644 root/.ssh/known_hosts
