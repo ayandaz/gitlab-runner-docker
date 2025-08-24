@@ -70,31 +70,21 @@ You can restart the container anytime with docker-compose restart.
 
 ## SSH
 
-Generate SSH Key on the Host
+Generate SSH Key
 
-Run this on your host machine (not inside the container):
+docker exec -it gitlab-runner bash
+mkdir -p /root/.ssh
+chmod 700 /root/.ssh
+cd /root/.ssh
+ssh-keygen -t ed25519 -C "ci-runner@container" -f id_ed25519 -N ""
+ssh-keyscan -t ed25519 gitlab.com >> known_hosts
+chmod 644 known_hosts
 
-ssh-keygen -t ed25519 -C "ci-runner@example.com" -f ./.ssh/id_ed25519
+Verify Permissions
+ls -l
 
+cat /root/.ssh/id_ed25519.pub
+Copy the public key to gitlab - GitLab → Settings → SSH Keys → Paste the .pub key
 
-This will create two files in your current directory:
-
-gitlab_ci_id_ed25519 → private key
-
-gitlab_ci_id_ed25519.pub → public key
-
-Add the public key to GitLab:
-
-GitLab → Settings → SSH Keys → Paste the .pub key
-
-2️⃣ Prepare Known Hosts
-
-Fetch GitLab’s SSH fingerprint to avoid prompts:
-try to log in once,
+Verfiy log in works
 ssh -T git@gitlab.com
-added gitlab.com to known_hosts
-or, ssh-keyscan -t ed25519 gitlab.com >> known_hosts
-
-chmod 600 root/.ssh/id_ed25519
-chmod 644 root/.ssh/id_ed25519.pub
-chmos 644 root/.ssh/known_hosts
