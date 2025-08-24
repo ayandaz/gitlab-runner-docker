@@ -74,7 +74,7 @@ Generate SSH Key on the Host
 
 Run this on your host machine (not inside the container):
 
-ssh-keygen -t ed25519 -C "ci-runner@example.com" -f ./gitlab_ci_id_ed25519 -N ""
+ ssh-keygen -t ed25519 -C "ci-runner@example.com" -f ./gitlab_ci_id_ed25519 -N "passphrase"
 
 
 This will create two files in your current directory:
