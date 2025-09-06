@@ -67,3 +67,27 @@ Notes
 The Docker socket is mounted to allow the runner to use Docker commands inside jobs.
 Runner configuration is persisted in the ./config directory.
 You can restart the container anytime with docker-compose restart.
+
+## SSH Configuration
+Generate SSH Key
+```
+docker exec -it gitlab-runner bash
+mkdir -p /root/.ssh
+chmod 700 /root/.ssh
+cd /root/.ssh
+ssh-keygen -t ed25519 -C "ci-runner@container" -f id_ed25519 -N ""
+ssh-keyscan -t ed25519 gitlab.com >> known_hosts
+chmod 644 known_hosts
+```
+Verify Permissions
+```
+ls -l
+```
+Copy the public key to gitlab - GitLab → Settings → SSH Keys → Paste the .pub key
+```
+cat /root/.ssh/id_ed25519.pub
+```
+Verfiy log in works
+```
+ssh -T git@gitlab.com
+```
