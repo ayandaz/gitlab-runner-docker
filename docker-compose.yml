@@ -5,7 +5,6 @@ services:
     privileged: true
     restart: always
     volumes:
-      - ./gitlab_ci_id_ed25519:/root/.ssh/id_ed25519:ro
-      - ./known_hosts:/root/.ssh/known_hosts:ro
       - ./config:/etc/gitlab-runner
+      - ./cache:/cache:rw
       - /var/run/docker.sock:/var/run/docker.sock
