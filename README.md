@@ -18,26 +18,23 @@ This repository provides a Docker Compose setup to run a GitLab Runner in a cont
 
 ## Installation
 
-1. Clone the repository:
+### Clone the repository:
 
 ```bash
 git clone https://github.com/ayandaz/gitlab-runner-docker.git
 cd gitlab-runner-docker
 ```
 
-2. Create a configuration directory for the runner:
-
-```bash
-mkdir config
-```
-## Start the Runner
+### Start the Runner
 ```bash
 docker-compose up -d
 ```
 This will start the GitLab Runner container in detached mode.
 
-## Registering the Runner
-Enter the running container:
+### Register the Runner
+Get the registration token from GitLab.
+Settings > CI/CD > Runners > Set up a specific runner (or Group Runners).
+Run the following
 ```bash
 docker exec -it gitlab-runner gitlab-runner register \
   --non-interactive \
@@ -52,13 +49,8 @@ docker exec -it gitlab-runner gitlab-runner register \
   --docker-volumes "/var/run/docker.sock:/var/run/docker.sock"
 
 ```
-Follow the prompts:
-
-- GitLab instance URL: Enter your GitLab URL (e.g., https://gitlab.com/ or your self-hosted instance).
-- Registration token: Get this from your GitLab project under Settings > CI/CD > Runners > Set up a specific runner.
-- Description: My very own docker container
+Follow the prompts if asked:
 - Tags: docker-unix-runner
-- Executor: Choose docker.
 - Default Docker image: Specify an image to use for jobs (e.g., docker:latest).
 
 After registration, your runner will appear in the GitLab project and be ready to run jobs.
@@ -69,7 +61,7 @@ docker-compose down
 ```
 This stops and removes the container but keeps the configuration in ./config.
 
-### Example command to make sure that the runner can actually talk to the host Docker daemon through the mapped socket
+### Example command to make sure that the runner can actually talk to the host Docker daemon through the mapped socket. Run this from inside the docker container.
 ```
 docker exec -it gitlab-runner docker info
 ```
