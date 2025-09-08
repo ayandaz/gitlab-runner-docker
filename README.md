@@ -74,23 +74,41 @@ You can restart the container anytime with docker-compose restart.
 ## SSH Configuration
 Generate SSH Key
 ```
-docker exec -it gitlab-runner bash
-mkdir -p /root/.ssh
-chmod 700 /root/.ssh
-cd /root/.ssh
 ssh-keygen -t ed25519 -C "ci-runner@container" -f id_ed25519 -N ""
 ssh-keyscan -t ed25519 gitlab.com >> known_hosts
-chmod 644 known_hosts
 ```
-Verify Permissions
+Run these commands to generate Base64 files
 ```
-ls -l
+openssl base64 -A -in ~/.ssh/id_ed25519 -out id_ed25519.b64
+openssl base64 -A -in ~/.ssh/known_hosts -out known_hosts.b64
 ```
 Copy the public key to gitlab - GitLab → Settings → SSH Keys → Paste the .pub key
+Create two variables $SSH_PRIVATE_KEY_B64 and SSH_KNOWN_HOSTS_B64 and copy the values respectively. 
+Copy id_ed25519.b64 content
 ```
-cat /root/.ssh/id_ed25519.pub
+cat /root/.ssh/id_ed25519.b64
 ```
-Verfiy log in works
+Copy known_hosts.b64 content
 ```
-ssh -T git@gitlab.com
+cat /root/.ssh/known_hosts.b64
+```
+Verfiy log in works in pipeline
+```
+echo "Setting up SSH connection to connect to GitLab"
+eval "$(ssh-agent -s)"
+
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
+# Decode base64 key into file
+echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_ed25519
+chmod 400 ~/.ssh/id_ed25519
+ssh-add ~/.ssh/id_ed25519
+
+echo "$SSH_KNOWN_HOSTS_B64" | base64 -d > ~/.ssh/known_hosts
+chmod 644 ~/.ssh/known_hosts
+export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519 -o UserKnownHostsFile=~/.ssh/known_hosts -o StrictHostKeyChecking=yes"
+
+echo "Testing SSH connection to GitLab..." #todo fail this if theres no connection
+ssh -T git@gitlab.com || echo "SSH test failed!"
 ```
