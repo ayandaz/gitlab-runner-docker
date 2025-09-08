@@ -39,7 +39,18 @@ This will start the GitLab Runner container in detached mode.
 ## Registering the Runner
 Enter the running container:
 ```bash
-docker exec -it gitlab-runner gitlab-runner register
+docker exec -it gitlab-runner gitlab-runner register \
+  --non-interactive \
+  --url "https://gitlab.com/" \
+  --registration-token "YOUR_REGISTRATION_TOKEN" \
+  --executor "docker" \
+  --description "Docker Unix Runner" \
+  --docker-image "maven:3.9.2-eclipse-temurin-17" \
+  --docker-privileged \
+  --docker-volumes "/config:/etc/gitlab-runner" \
+  --docker-volumes "/cache:/cache:rw" \
+  --docker-volumes "/var/run/docker.sock:/var/run/docker.sock"
+
 ```
 Follow the prompts:
 
