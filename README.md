@@ -72,18 +72,18 @@ Runner configuration is persisted in the ./config directory.
 You can restart the container anytime with docker-compose restart.
 
 ## SSH Configuration
-Generate SSH Key
+- Generate SSH Key
 ```
 ssh-keygen -t ed25519 -C "ci-runner@container" -f id_ed25519 -N ""
 ssh-keyscan -t ed25519 gitlab.com >> known_hosts
 ```
-Run these commands to generate Base64 files
+- Run these commands to generate Base64 files
 ```
 openssl base64 -A -in ~/.ssh/id_ed25519 -out id_ed25519.b64
 openssl base64 -A -in ~/.ssh/known_hosts -out known_hosts.b64
 ```
-Copy the public key to gitlab - GitLab → Settings → SSH Keys → Paste the .pub key
-Create two variables $SSH_PRIVATE_KEY_B64 and SSH_KNOWN_HOSTS_B64 and copy the values respectively. 
+- Copy the public key to gitlab - GitLab → Settings → SSH Keys → Paste the .pub key
+- Create two variables $SSH_PRIVATE_KEY_B64 and SSH_KNOWN_HOSTS_B64 and copy the values respectively. 
 Copy id_ed25519.b64 content
 ```
 cat /root/.ssh/id_ed25519.b64
@@ -92,7 +92,7 @@ Copy known_hosts.b64 content
 ```
 cat /root/.ssh/known_hosts.b64
 ```
-Verfiy log in works in pipeline
+- Verfiy log in works in pipeline
 ```
 echo "Setting up SSH connection to connect to GitLab"
 eval "$(ssh-agent -s)"
